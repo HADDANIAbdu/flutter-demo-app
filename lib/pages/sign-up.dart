@@ -52,12 +52,15 @@ class _SignUpState extends State<SignUp>{
             if(status == 'error')
               _buildMessage(message, Colors.red),
             TextField(
+              controller: _usernameController,
               decoration: InputDecoration(labelText: "full Name"),
             ),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(labelText: "email"),
             ),
             TextField(
+              controller: _passwordController,
               decoration: InputDecoration(labelText: "password"),
               obscureText: true,
             ),
