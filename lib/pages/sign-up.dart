@@ -34,55 +34,103 @@ class _SignUpState extends State<SignUp>{
         message = null;
       }
     });
+    if(status == 'success'){
+      Future.delayed(Duration(seconds: 3), (){
+        if(mounted){
+          onSuccessRegister(context);
+        }
+      });
+    }
+  }
 
+  void onSuccessRegister(BuildContext context){
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SignIn())
+      );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:  Text("Sign Up page")),
-      body:
-      Padding(
+      appBar: AppBar(title: Text("Sign Up")),
+      body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if(status == 'success')
-              _buildMessage(message, Colors.green),
-            if(status == 'error')
-              _buildMessage(message, Colors.red),
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: "full Name"),
+        child: Center(
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: "email"),
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (status == 'success') _buildMessage(message, Colors.green),
+                  if (status == 'error') _buildMessage(message, Colors.red),
+                  TextField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      labelText: "Full Name",
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      prefixIcon: Icon(Icons.email),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  TextField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      prefixIcon: Icon(Icons.lock),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: signUp,
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    ),
+                    child: Text("Sign Up"),
+                  ),
+                  SizedBox(height: 15),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignIn()),
+                      );
+                    },
+                    child: Text("Already have an account? Sign In"),
+                  ),
+                ],
+              ),
             ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: "password"),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-                onPressed: signUp,
-                child: Text("Sign Up")
-            ),
-            TextButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignIn())
-                  );
-                },
-                child: Text("Already Have an account ? Sign In")
-            )
-          ],
+          ),
         ),
-      )
-      ,
+      ),
     );
+
   }
 
   Widget _buildMessage(String? text, Color color) {
