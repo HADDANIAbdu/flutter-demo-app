@@ -20,6 +20,7 @@ class _SignInState extends State<SignIn>{
 
   String? status;
   String? message;
+  String? jwtToken;
 
   void signIn() async{
     String email = _emailController.text;
@@ -30,7 +31,8 @@ class _SignInState extends State<SignIn>{
       if(resp != null){
         status = resp['status'];
         message = resp['message'];
-        storageService.saveToken('JwtToken', resp['token']);
+        jwtToken = resp['token'];
+        storageService.saveToken('JwtToken', jwtToken);
       }
       else{
         status = null;
@@ -50,7 +52,7 @@ class _SignInState extends State<SignIn>{
   void onSuccessLogin(BuildContext context){
     Navigator.pushReplacement(
       context, 
-      MaterialPageRoute(builder: (context) => Profile())
+      MaterialPageRoute(builder: (context) => Profile(jwtToken: jwtToken))
     );
   }
   
